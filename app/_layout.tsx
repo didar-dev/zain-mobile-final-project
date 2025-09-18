@@ -9,26 +9,33 @@ export default function RootLayout() {
   const { setIsLoggedIn, setProfile }: any = useStore();
   const { setCategories }: any = useCategories();
   const checkauth = async () => {
-    const token = await SecureStore.getItemAsync("token");
-    const response = await fetch(
-      `${process.env.EXPO_PUBLIC_API_URL}/auth/profile`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+    try {
+      const token = await SecureStore.getItemAsync("token");
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_API_URL}/auth/profile`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await response.json();
+
+      if (data?.success) {
+        if (data?.data?.id) {
+          setIsLoggedIn(true);
+          setProfile(data?.data);
+          SplashScreen.hideAsync();
+        }
+        SplashScreen.hideAsync();
       }
-    );
-    const data = await response.json();
-    console.log(JSON.stringify(data));
-    if (data?.success) {
-      if (data?.data?.id) {
-        setIsLoggedIn(true);
-        setProfile(data?.data);
-      }
+      SplashScreen.hideAsync();
+    } catch (error) {
+      console.log(error);
+      SplashScreen.hideAsync();
     }
-    SplashScreen.hideAsync();
   };
   const FetchGateries = async () => {
     try {
@@ -52,5 +59,26 @@ export default function RootLayout() {
     FetchGateries();
   }, []);
 
-  return <Stack />;
+  return (
+    <Stack
+      screenOptions={{
+        headerBackTitle: "Back",
+        headerBackButtonMenuEnabled: false,
+      }}
+    >
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="(auth)/login"
+        options={{ headerShown: true, headerTitle: "Login" }}
+      />
+      <Stack.Screen
+        name="(auth)/register"
+        options={{ headerShown: true, headerTitle: "Register" }}
+      />
+      <Stack.Screen
+        name="(standalone)/CreateBook"
+        options={{ headerTitle: "Create Book" }}
+      />
+    </Stack>
+  );
 }
