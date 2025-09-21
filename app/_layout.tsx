@@ -1,3 +1,4 @@
+import { useBooks } from "@/store/books";
 import { useCategories } from "@/store/categories";
 import { Stack } from "expo-router";
 import * as SecureStore from "expo-secure-store";
@@ -8,6 +9,7 @@ SplashScreen.preventAutoHideAsync(); /// prevent auto hide of splash screen
 export default function RootLayout() {
   const { setIsLoggedIn, setProfile }: any = useStore();
   const { setCategories }: any = useCategories();
+  const { setRecentBooksLoading, setRecentBooks }: any = useBooks();
   const checkauth = async () => {
     try {
       const token = await SecureStore.getItemAsync("token");
@@ -35,9 +37,11 @@ export default function RootLayout() {
     } catch (error) {
       console.log(error);
       SplashScreen.hideAsync();
+    } finally {
+      SplashScreen.hideAsync();
     }
   };
-  const FetchGateries = async () => {
+  const FetchGategories = async () => {
     try {
       const response = await fetch(
         `${process.env.EXPO_PUBLIC_API_URL}/categories`,
@@ -54,9 +58,34 @@ export default function RootLayout() {
       }
     } catch (error) {}
   };
+  const FetchRecentBooks = async () => {
+    setRecentBooksLoading(true);
+    try {
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_API_URL}/books/recent`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (data?.success) {
+        setRecentBooks(data?.data);
+        setRecentBooksLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setRecentBooksLoading(false);
+    } finally {
+      setRecentBooksLoading(false);
+    }
+  };
   useEffect(() => {
     checkauth();
-    FetchGateries();
+    FetchGategories();
+    FetchRecentBooks();
   }, []);
 
   return (
