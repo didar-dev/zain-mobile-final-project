@@ -1,7 +1,8 @@
 import { useBooks } from "@/store/books";
 import { useCategories } from "@/store/categories";
 import { Image } from "expo-image";
-import { FlatList, Text, View } from "react-native";
+import { router } from "expo-router";
+import { FlatList, Pressable, Text, View } from "react-native";
 
 export default function Index() {
   const { categories }: any = useCategories();
@@ -48,7 +49,10 @@ export default function Index() {
           paddingVertical: 10,
         }}
         renderItem={({ item }) => (
-          <View
+          <Pressable
+            onPress={() => {
+              router.push(`./(standalone)/books/${item?.id}`);
+            }}
             style={{
               backgroundColor: "white",
               padding: 10,
@@ -103,7 +107,7 @@ export default function Index() {
             >
               {item.FirstName} {item.LastName}
             </Text>
-          </View>
+          </Pressable>
         )}
       />
     </View>

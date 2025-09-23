@@ -11,6 +11,7 @@ export default function RootLayout() {
   const { setCategories }: any = useCategories();
   const { setRecentBooksLoading, setRecentBooks }: any = useBooks();
   const checkauth = async () => {
+    SplashScreen.hideAsync();
     try {
       const token = await SecureStore.getItemAsync("token");
       const response = await fetch(
