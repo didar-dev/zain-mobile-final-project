@@ -3,7 +3,6 @@ import { useCategories } from "@/store/categories";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import { FlatList, Pressable, Text, View } from "react-native";
-
 export default function Index() {
   const { categories }: any = useCategories();
   const { recent_books }: any = useBooks();

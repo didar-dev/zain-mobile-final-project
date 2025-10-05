@@ -1,15 +1,18 @@
 import { useBooks } from "@/store/books";
 import { useCategories } from "@/store/categories";
+import { userefresh } from "@/store/refresh";
 import { Stack } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { useStore } from "../store/auth";
+
 SplashScreen.preventAutoHideAsync(); /// prevent auto hide of splash screen
 export default function RootLayout() {
   const { setIsLoggedIn, setProfile }: any = useStore();
   const { setCategories }: any = useCategories();
   const { setRecentBooksLoading, setRecentBooks }: any = useBooks();
+  const { HP_refresher }: any = userefresh();
   const checkauth = async () => {
     SplashScreen.hideAsync();
     try {
@@ -86,9 +89,10 @@ export default function RootLayout() {
   useEffect(() => {
     checkauth();
     FetchGategories();
-    FetchRecentBooks();
   }, []);
-
+  useEffect(() => {
+    FetchRecentBooks();
+  }, [HP_refresher]);
   return (
     <Stack
       screenOptions={{

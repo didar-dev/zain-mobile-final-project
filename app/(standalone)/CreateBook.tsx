@@ -1,3 +1,4 @@
+import { userefresh } from "@/store/refresh";
 import * as ImagePicker from "expo-image-picker";
 import * as SecureStore from "expo-secure-store";
 import React, { useState } from "react";
@@ -23,6 +24,7 @@ interface FormData {
 
 export default function CreateBook() {
   //// get categories from the zustand store
+  const { HP_Trigger }: any = userefresh();
   const { categories }: any = useCategories();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
@@ -113,6 +115,7 @@ export default function CreateBook() {
       const data_response = await response.json();
 
       if (data_response?.success) {
+        HP_Trigger();
         Alert.alert("Success", "Book created successfully!");
         // Reset form
         setSelectedImage(null);
