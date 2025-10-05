@@ -1,3 +1,4 @@
+import Book_Review from "@/components/Book_Review";
 import { useStore } from "@/store/auth";
 import { Image } from "expo-image";
 import { Stack, useLocalSearchParams } from "expo-router";
@@ -66,6 +67,14 @@ export default function Books() {
       <Text style={{ fontSize: 24, fontWeight: "bold", margin: 10 }}>
         {book?.Name}
       </Text>
+      <Text style={{ fontSize: 24, fontWeight: "bold", margin: 10 }}>
+        {book?.Descreption}
+      </Text>
+      <Book_Review
+        book_id={book.id}
+        reviews={book?.reviews}
+        fetchBook={fetchBook}
+      />
     </ScrollView>
   );
 }
