@@ -113,6 +113,10 @@ export default function RootLayout() {
         name="(standalone)/CreateBook"
         options={{ headerTitle: "Create Book" }}
       />
+      <Stack.Screen
+        name="(standalone)/books/edit/index"
+        options={{ headerTitle: "Edit Book" }}
+      />
     </Stack>
   );
 }

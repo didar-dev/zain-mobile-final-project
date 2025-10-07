@@ -24,7 +24,7 @@ export default function _layout() {
         name="index"
         options={{
           title: "Home",
-          headerTitle: "Home",
+          headerTitle: "",
           tabBarLabel: "Home",
           headerLeft() {
             return (
@@ -64,11 +64,13 @@ export default function _layout() {
                   paddingHorizontal: 20,
                 }}
               >
-                <Pressable
-                  onPress={() => router.push("/(standalone)/CreateBook")}
-                >
-                  <Feather name="plus" size={24} color="black" />
-                </Pressable>
+                {profile?.id ? (
+                  <Pressable
+                    onPress={() => router.push("/(standalone)/CreateBook")}
+                  >
+                    <Feather name="plus" size={24} color="black" />
+                  </Pressable>
+                ) : null}
                 {profile?.id ? (
                   <Pressable
                     style={{

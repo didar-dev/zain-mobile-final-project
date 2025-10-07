@@ -8,4 +8,6 @@ export const useBooks = create((set) => ({
   setRecentBooks: (recent_books: any) => set({ recent_books }),
   setRecentBooksLoading: (recent_books_loading: boolean) =>
     set({ recent_books_loading }),
+  edit_book: null,
+  setEditBook: (edit_book: any) => set({ edit_book }),
 }));
